@@ -8,17 +8,23 @@
 class DynFibonacci {
     size_t *cache;
     int cached;
+    int capacity;
+
+    static size_t *allocate(int capacity) {
+        ASSERT(capacity >= 2, "capacity should be at least 2");
+        return new size_t[capacity]{0, 1};
+    }
 
 public:
-    // TODO: 实现动态设置容量的构造器
-    DynFibonacci(int capacity): cache(new ?), cached(?) {}
+    DynFibonacci(int capacity_) : cache(allocate(capacity_)), cached(2), capacity(capacity_) {}
 
-    // TODO: 实现析构器，释放缓存空间
-    ~DynFibonacci();
+    ~DynFibonacci() {
+        delete[] cache;
+    }
 
-    // TODO: 实现正确的缓存优化斐波那契计算
     size_t get(int i) {
-        for (; false; ++cached) {
+        ASSERT(i >= 0 && i < capacity, "i out of range");
+        for (; cached <= i; ++cached) {
             cache[cached] = cache[cached - 1] + cache[cached - 2];
         }
         return cache[i];
